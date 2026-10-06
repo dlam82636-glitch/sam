@@ -1,73 +1,95 @@
 /**
- * Research API Client Coordinator
+ * PRICERA API Client Coordinator (Prompts 3, 4, 5 & 6)
  *
- * Provides a clean interface for executing product and material research requests.
- * In this foundation stage (Prompts 1 & 2):
- * - Simulates the multi-step intelligence pipeline progression.
- * - In Stage 3, the internal implementation will be switched to a real POST /api/research
- *   backend call without modifying consuming React components.
+ * Dispatches validated text-search queries to the server-side endpoint (POST /api/search).
+ * Coordinates signature pipeline stage transitions (Understand -> Research -> Compare -> Estimate),
+ * duplicate request prevention, and structured response handling.
  */
 
 import { validateProductQuery } from '@/src/lib/validation';
-import { DEMO_DATASETS, generateGenericDemoResult } from '@/src/mocks/demonstrationData';
-import { ResearchPipelineResult, PipelineStage } from '@/src/types';
+import { SignatureStageId, PriceraResearchResponse } from '@/src/types/pipeline';
 
 export interface ResearchRequestOptions {
-  onStageChange?: (stage: PipelineStage, message: string) => void;
-  simulateFailure?: boolean;
+  onStageTransition?: (stage: SignatureStageId, message: string) => void;
+  signal?: AbortSignal;
 }
 
-export async function executeResearchQuery(
+// In-flight client request lock to prevent accidental duplicate parallel triggers
+let activeQueryPromise: { query: string; promise: Promise<PriceraResearchResponse> } | null = null;
+
+export async function executeSearchQuery(
   rawQuery: string,
   options?: ResearchRequestOptions
-): Promise<ResearchPipelineResult> {
-  const { onStageChange, simulateFailure = false } = options || {};
+): Promise<PriceraResearchResponse> {
+  const { onStageTransition, signal } = options || {};
 
   // Step 1: Client Validation
-  onStageChange?.('validating', 'Validating input query and sanitizing characters...');
-  await delay(250);
-
   const validation = validateProductQuery(rawQuery);
   if (!validation.isValid) {
     throw new Error(validation.errorMessage || 'Invalid search query.');
   }
 
-  // Artificial error simulation for UI verification
-  if (simulateFailure) {
-    await delay(300);
-    throw new Error('Simulation Error: Unable to contact market research index. Please verify your connection.');
+  const sanitizedQuery = validation.sanitizedQuery;
+  const normalizedKey = sanitizedQuery.toLowerCase();
+
+  // Step 2: Client Duplicate Submission Guard
+  if (activeQueryPromise && activeQueryPromise.query === normalizedKey) {
+    return activeQueryPromise.promise;
   }
 
-  // Step 2: AI Query Understanding Simulation
-  onStageChange?.('understanding', 'Parsing query intent, dimensional specs, and product category...');
-  await delay(350);
+  // Visual signature pipeline progression
+  onStageTransition?.('understand', 'Analyzing product specifications, variants, and query intent with AI...');
 
-  // Step 3: Web Research Query Generation & Retrieval Simulation
-  onStageChange?.('searching', 'Dispatching targeted supplier queries across distributor catalogs...');
-  await delay(450);
+  const requestPromise = (async () => {
+    try {
+      // Simulate pipeline progression visual signals while backend runs
+      const stepTimer1 = setTimeout(() => {
+        onStageTransition?.('research', 'Dispatching prospective supplier queries across catalogs...');
+      }, 700);
 
-  // Step 4: Normalization & Specification Extraction Simulation
-  onStageChange?.('extracting', 'Extracting technical specifications and verifying source domains...');
-  await delay(300);
+      const stepTimer2 = setTimeout(() => {
+        onStageTransition?.('compare', 'Grouping listings, normalizing currencies, and checking variant match...');
+      }, 1600);
 
-  // Step 5: Pricing Intelligence Calculation Simulation
-  onStageChange?.('calculating', 'Calculating median market estimates, confidence bounds, and assumptions...');
-  await delay(250);
+      const stepTimer3 = setTimeout(() => {
+        onStageTransition?.('estimate', 'Executing median pricing algorithm and evaluating confidence...');
+      }, 2400);
 
-  // Resolution: Find in demo dataset or generate generic demo layout
-  const normalizedKey = validation.sanitizedQuery.toLowerCase();
-  const matchedKey = Object.keys(DEMO_DATASETS).find(
-    (k) => k === normalizedKey || normalizedKey.includes(k) || k.includes(normalizedKey)
-  );
+      const response = await fetch('/api/search', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ query: sanitizedQuery }),
+        signal,
+      });
 
-  const result = matchedKey
-    ? DEMO_DATASETS[matchedKey]
-    : generateGenericDemoResult(validation.sanitizedQuery);
+      clearTimeout(stepTimer1);
+      clearTimeout(stepTimer2);
+      clearTimeout(stepTimer3);
 
-  onStageChange?.('completed', 'Research intelligence synthesis complete.');
-  return result;
-}
+      let json: any;
+      try {
+        json = await response.json();
+      } catch (parseErr) {
+        throw new Error('Server returned an unparseable response. Please try again.');
+      }
 
-function delay(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+      if (!response.ok || !json.success) {
+        const errorMsg = json.error || `Search request failed with status ${response.status}.`;
+        throw new Error(errorMsg);
+      }
+
+      onStageTransition?.('estimate', 'Market analysis synthesis complete.');
+
+      return json as PriceraResearchResponse;
+    } finally {
+      if (activeQueryPromise && activeQueryPromise.query === normalizedKey) {
+        activeQueryPromise = null;
+      }
+    }
+  })();
+
+  activeQueryPromise = { query: normalizedKey, promise: requestPromise };
+  return requestPromise;
 }

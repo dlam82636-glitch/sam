@@ -25,6 +25,8 @@ export const SearchBar: React.FC<SearchBarProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLoading) return;
+
     const validation = validateProductQuery(inputValue);
 
     if (!validation.isValid) {
@@ -56,7 +58,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   return (
     <div className="w-full max-w-3xl mx-auto">
       <form onSubmit={handleSubmit} className="relative">
-        <div className="relative flex items-center bg-white rounded-2xl border-2 border-slate-300 shadow-sm hover:border-slate-400 focus-within:border-indigo-600 focus-within:ring-4 focus-within:ring-indigo-100 transition-all duration-200">
+        <div className="relative flex items-center bg-white rounded-2xl border-2 border-slate-300 shadow-sm hover:border-slate-400 focus-within:border-teal-600 focus-within:ring-4 focus-within:ring-teal-100 transition-all duration-200">
           {/* Leading Search Icon */}
           <div className="pl-4 sm:pl-5 pr-2 text-slate-400 pointer-events-none flex items-center">
             <Search className="w-5 h-5 sm:w-6 sm:h-6 text-slate-400" aria-hidden="true" />

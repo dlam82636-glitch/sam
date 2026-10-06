@@ -65,3 +65,94 @@ export function validateProductQuery(rawQuery: string): ValidationResult {
     warningMessage,
   };
 }
+
+/**
+ * Server-side request validator for search payloads.
+ * Enforces strict type boundaries on untrusted HTTP input.
+ */
+export interface ServerValidationResult {
+  isValid: boolean;
+  sanitizedQuery: string;
+  statusCode?: number;
+  errorMessage?: string;
+}
+
+export function validateServerSearchRequest(body: unknown): ServerValidationResult {
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return {
+      isValid: false,
+      sanitizedQuery: '',
+      statusCode: 400,
+      errorMessage: 'Invalid request body. Expected a JSON object with a "query" field.',
+    };
+  }
+
+  const { query } = body as Record<string, unknown>;
+
+  if (query === undefined || query === null) {
+    return {
+      isValid: false,
+      sanitizedQuery: '',
+      statusCode: 400,
+      errorMessage: 'Missing "query" parameter in request body.',
+    };
+  }
+
+  if (typeof query !== 'string') {
+    return {
+      isValid: false,
+      sanitizedQuery: '',
+      statusCode: 400,
+      errorMessage: 'The "query" parameter must be a string.',
+    };
+  }
+
+  // Strip non-printable ASCII control characters (keep standard spacing, unicode letters, math/spec symbols)
+  const cleaned = query.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim();
+
+  if (cleaned.length === 0) {
+    return {
+      isValid: false,
+      sanitizedQuery: '',
+      statusCode: 400,
+      errorMessage: 'Query must not be empty.',
+    };
+  }
+
+  if (cleaned.length < 2) {
+    return {
+      isValid: false,
+      sanitizedQuery: cleaned,
+      statusCode: 400,
+      errorMessage: 'Query is too short. Please provide at least 2 characters.',
+    };
+  }
+
+  const MAX_QUERY_LENGTH = 200;
+  if (cleaned.length > MAX_QUERY_LENGTH) {
+    return {
+      isValid: false,
+      sanitizedQuery: cleaned.slice(0, MAX_QUERY_LENGTH),
+      statusCode: 400,
+      errorMessage: `Query exceeds maximum length of ${MAX_QUERY_LENGTH} characters.`,
+    };
+  }
+
+  // Check for at least one letter or digit
+  if (!/[a-zA-Z0-9]/.test(cleaned)) {
+    return {
+      isValid: false,
+      sanitizedQuery: cleaned,
+      statusCode: 400,
+      errorMessage: 'Query must contain at least one alphanumeric character.',
+    };
+  }
+
+  // Normalize multi-spaces
+  const normalized = cleaned.replace(/\s+/g, ' ');
+
+  return {
+    isValid: true,
+    sanitizedQuery: normalized,
+  };
+}

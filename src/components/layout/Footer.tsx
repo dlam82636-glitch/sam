@@ -12,44 +12,46 @@ export const Footer: React.FC<FooterProps> = ({ onOpenArchitectureModal }) => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <span className="font-bold text-slate-900 tracking-tight">MarketSpec</span>
-              <span className="text-xs px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-mono">MVP Foundation</span>
+              <span className="font-extrabold text-slate-900 tracking-tight text-base">PRICERA</span>
+              <span className="text-[10px] px-2 py-0.5 rounded bg-teal-50 text-teal-800 font-mono border border-teal-200">
+                Market Intelligence
+              </span>
             </div>
-            <p className="text-xs text-slate-700 leading-relaxed max-w-sm">
-              An engineering-grade search platform for researching physical goods, building materials, and industrial equipment with structured specifications and transparent price intelligence.
+            <p className="text-xs text-slate-600 leading-relaxed max-w-sm">
+              <strong>Know the market before you buy.</strong> PRICERA is an evidence-driven product and material research platform providing structured specification parsing and transparent market price bounds.
             </p>
           </div>
 
           <div>
-            <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
-              Design Principles
+            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">
+              Core Principles
             </h4>
-            <ul className="space-y-2 text-xs text-slate-700">
+            <ul className="space-y-2 text-xs text-slate-600">
               <li className="flex items-center gap-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span>Zero unsupported AI estimates: prices require sources</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                <span>Zero fabricated prices or artificial sources</span>
               </li>
               <li className="flex items-center gap-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span>Text-only interaction: fast, clean, and distraction-free</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                <span>Transparent median calculations & outlier screening</span>
               </li>
               <li className="flex items-center gap-2">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                <span>Modular service abstraction for future backend stages</span>
+                <ShieldCheck className="w-3.5 h-3.5 text-teal-600 shrink-0" />
+                <span>Clean text-first interaction without distractions</span>
               </li>
             </ul>
           </div>
 
           <div>
-            <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider mb-3">
-              System Blueprint
+            <h4 className="text-xs font-bold text-slate-900 uppercase tracking-wider mb-3">
+              System Roadmap
             </h4>
-            <p className="text-xs text-slate-700 mb-3 leading-relaxed">
-              Stage 1 & 2 establish technical contracts, clean folder structure, and UI foundation. Live AI and web search services will be enabled in subsequent stages.
+            <p className="text-xs text-slate-600 mb-3 leading-relaxed">
+              Prompts 1–6 active: Query Understanding, Product Research Layer, and Pricing Intelligence Engine are operational.
             </p>
             <button
               onClick={onOpenArchitectureModal}
-              className="inline-flex items-center gap-1.5 text-xs font-medium text-indigo-600 hover:text-indigo-800 transition-colors"
+              className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal-700 hover:text-teal-900 transition-colors cursor-pointer"
             >
               <FileText className="w-3.5 h-3.5" />
               <span>Review Technical Architecture Doc</span>
@@ -57,12 +59,12 @@ export const Footer: React.FC<FooterProps> = ({ onOpenArchitectureModal }) => {
           </div>
         </div>
 
-        <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-700">
+        <div className="mt-8 pt-6 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
           <div className="flex items-center gap-2">
-            <Info className="w-3.5 h-3.5 text-slate-600" />
-            <span>Prototype Demonstration: All displayed numbers in Stage 1/2 are synthetic fixtures.</span>
+            <Info className="w-3.5 h-3.5 text-slate-400" />
+            <span>PRICERA Engine: Understand · Research · Compare · Estimate</span>
           </div>
-          <div>Built with strict separation of presentation and intelligence pipelines.</div>
+          <div className="font-mono text-[11px]">Strict separation of evidence and statistical estimates.</div>
         </div>
       </div>
     </footer>

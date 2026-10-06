@@ -55,7 +55,7 @@ export const QueryInterpretationCard: React.FC<QueryInterpretationCardProps> = (
               {Object.entries(interpretation.detectedSpecifications).map(([key, val]) => (
                 <div key={key} className="p-2 rounded bg-slate-50 border border-slate-100 flex items-center justify-between">
                   <span className="text-slate-500">{key}:</span>
-                  <span className="font-medium text-slate-900 font-mono">{val}</span>
+                  <span className="font-medium text-slate-900 font-mono">{String(val)}</span>
                 </div>
               ))}
             </div>
@@ -69,7 +69,7 @@ export const QueryInterpretationCard: React.FC<QueryInterpretationCardProps> = (
                 <span>Identified Specification Ambiguities</span>
               </h5>
               <ul className="space-y-1 pl-4 list-disc text-slate-600">
-                {interpretation.possibleAmbiguities.map((item, idx) => (
+                {interpretation.possibleAmbiguities.map((item: string, idx: number) => (
                   <li key={idx}>{item}</li>
                 ))}
               </ul>
@@ -82,7 +82,7 @@ export const QueryInterpretationCard: React.FC<QueryInterpretationCardProps> = (
               Generated Targeted Search Queries (Dispatched to Suppliers)
             </h5>
             <div className="space-y-1.5 font-mono text-[11px]">
-              {interpretation.suggestedSearchQueries.map((q, idx) => (
+              {interpretation.suggestedSearchQueries.map((q: any, idx: number) => (
                 <div key={idx} className="p-2 rounded bg-slate-100/70 border border-slate-200 flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Search className="w-3.5 h-3.5 text-slate-400" />

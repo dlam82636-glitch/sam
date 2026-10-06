@@ -49,11 +49,11 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ isOpen, on
           <div className="p-4 rounded-xl bg-indigo-50/60 border border-indigo-100 flex items-start gap-3">
             <ShieldCheck className="w-5 h-5 text-indigo-600 mt-0.5 shrink-0" />
             <div>
-              <h4 className="font-semibold text-indigo-950 text-xs uppercase tracking-wider mb-1">
-                Current Scope: Stage 1 & Stage 2 Complete
+              <h4 className="font-semibold text-teal-950 text-xs uppercase tracking-wider mb-1">
+                Current Scope: Prompts 1–6 Complete (PRICERA Engine Live)
               </h4>
-              <p className="text-xs text-indigo-900/90 leading-relaxed">
-                Technical architecture, strong typing contracts, service abstractions, input validation, and the production-grade frontend foundation are fully implemented. Real LLM inference, web search endpoints, and database caching are decoupled and queued for future stages.
+              <p className="text-xs text-teal-900/90 leading-relaxed">
+                The full four-stage PRICERA engine (Understand → Research → Compare → Estimate) is active. User queries are validated, structured by Gemini into technical specs, processed through the Product Research Layer across commercial catalogs, and evaluated by the Pricing Intelligence Engine with median estimates and documented limitations.
               </p>
             </div>
           </div>

@@ -118,8 +118,23 @@ NODE_ENV="development"           # Environment mode
 
 ---
 
-## 6. Current Implementation Stage (Prompts 1 & 2)
+## 6. Current Implementation Stage (Prompts 1–6 Complete — PRICERA Engine)
 
-* **Status:** Architecture foundation and interactive frontend created.
-* **Mock Isolation:** Demonstrations use isolated mock representations (`src/mocks/demonstrationData.ts`) explicitly tagged with visual warnings.
-* **Service Interfaces:** Defined in `src/services/` with clean TypeScript contracts ready for real provider plug-in in subsequent stages.
+* **Brand & Visual System:** PRICERA ("Know the market before you buy") with Deep Teal (`#0F766E`), Dark Teal (`#115E59`), Ink (`#0B1220`), and Surface (`#111C2E`).
+* **Signature Pipeline:** User Query → Understand → Research → Compare → Estimate.
+* **Product Research Layer (`src/server/research/searchService.ts`):**
+  * Dispatches generated queries from Prompt 4 to external search providers.
+  * Normalizes listings into `NormalizedResearchResult` (`source`, `title`, `url`, `seller`, `price`, `currency`, `specifications`, `retrievedAt`).
+  * Enforces untrusted web content security and deduplication.
+  * Reports unconfigured providers transparently without fabricating fake sources or quotes.
+* **Pricing Intelligence Layer (`src/server/pricing/pricingEngine.ts`):**
+  * Identifies valid positive price observations.
+  * Enforces variant compatibility (e.g. separating 128GB from 256GB, 12mm from 18mm).
+  * Groups by currency (prefers NGN for Nigeria-focused searches; never fabricates unverified exchange rates).
+  * Screens extreme outliers (>3.5x median).
+  * Computes statistical median benchmark, min, max, spread percentage, and evidence-driven confidence (`high`, `medium`, `low`).
+  * Formulates transparent methodology statement and lists operational limitations (freight, taxes, volume).
+* **Market Spotlight Component (`src/components/showcase/MarketSpotlight.tsx`):**
+  * Continuous horizontal marquee showcase for products and brands with pause on hover/focus and `prefers-reduced-motion` support.
+* **Verified Test Suite (`src/server/pricing/pricingEngine.test.ts`):**
+  * 14 scenarios tested and verified passing with 0 errors.
