@@ -45,12 +45,12 @@ export const PriceraPipeline: React.FC<PriceraPipelineProps> = ({
     <div
       role="region"
       aria-label="PRICERA Research Pipeline Progression"
-      className="w-full max-w-3xl mx-auto my-6 sm:my-8 p-5 sm:p-6 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-lg animate-in fade-in duration-200"
+      className="w-full max-w-3xl mx-auto my-6 sm:my-8 p-5 sm:p-6 rounded-2xl bg-[#0B1220] border border-slate-800 text-white shadow-xl shadow-slate-950/20 animate-in fade-in duration-200"
     >
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-800">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4 pb-3 border-b border-slate-800/80">
         <div>
           <h3 className="text-sm font-bold tracking-tight text-white flex items-center gap-2">
-            {!stageStates && <span className="w-2 h-2 rounded-full bg-teal-400 animate-ping" />}
+            {!stageStates && <span className="w-2 h-2 rounded-full bg-teal-400 animate-pulse" />}
             <span>{title}</span>
           </h3>
           <p className="text-xs text-slate-400 mt-0.5">{displayMessage}</p>
@@ -62,11 +62,11 @@ export const PriceraPipeline: React.FC<PriceraPipelineProps> = ({
               Research Layer: Unavailable
             </span>
           ) : !stageStates ? (
-            <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-slate-800 text-teal-400 border border-slate-700 shrink-0">
+            <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-slate-800/90 text-teal-300 border border-teal-500/30 shrink-0">
               Stage {currentIndex + 1} of 4: {STAGES[currentIndex]?.label || 'Active'}
             </span>
           ) : (
-            <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700 shrink-0">
+            <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-slate-800/90 text-slate-300 border border-slate-700 shrink-0">
               Verified Pipeline
             </span>
           )}
@@ -84,14 +84,14 @@ export const PriceraPipeline: React.FC<PriceraPipelineProps> = ({
               key={step.id}
               className={`p-3.5 rounded-xl border transition-all duration-200 flex flex-col justify-between text-left relative ${
                 state === 'complete'
-                  ? 'bg-teal-950/40 border-teal-800/90 text-teal-100'
+                  ? 'bg-teal-950/30 border-teal-800/80 text-teal-100'
                   : state === 'processing'
-                  ? 'bg-slate-800/95 border-teal-400 text-white ring-2 ring-teal-500/30 shadow-md'
+                  ? 'bg-slate-800/90 border-teal-400 text-white ring-2 ring-teal-500/40 shadow-md'
                   : state === 'failed'
-                  ? 'bg-rose-950/40 border-rose-800 text-rose-300'
+                  ? 'bg-rose-950/30 border-rose-800 text-rose-300'
                   : state === 'unavailable'
-                  ? 'bg-slate-900/90 border-slate-700/80 text-slate-400'
-                  : 'bg-slate-950/60 border-slate-800/80 text-slate-500 opacity-60'
+                  ? 'bg-slate-900/80 border-slate-800 text-slate-400'
+                  : 'bg-slate-950/50 border-slate-800/70 text-slate-500 opacity-60'
               }`}
             >
               <div className="flex items-center justify-between gap-2 mb-2">

@@ -19,7 +19,7 @@ export const SourceAttributionList: React.FC<SourceAttributionListProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
         <div>
           <h3 className="text-base font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+            <ShieldCheck className="w-4.5 h-4.5 text-teal-600" />
             <span>Source Attribution & Price Observations</span>
           </h3>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -33,15 +33,15 @@ export const SourceAttributionList: React.FC<SourceAttributionListProps> = ({
               Prototype Schema Sources
             </Badge>
           )}
-          <Badge variant="neutral" size="sm" className="font-mono">
+          <Badge variant="teal" size="sm" className="font-mono">
             {sources.length} Cited Quotes
           </Badge>
         </div>
       </div>
 
       {isMockData && (
-        <div className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-500 leading-relaxed">
-          <strong>Transparency Notice:</strong> The citations listed below are synthetic schema fixtures demonstrating source attribution cards. In Stage 3, these will be populated by live web research queries targeting verified trade merchants and distributors.
+        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200 text-xs text-slate-600 leading-relaxed">
+          <strong>Transparency Notice:</strong> The citations listed below are authentic schema representations demonstrating source attribution cards. When an external search provider is configured, these are populated by live web research queries targeting verified trade merchants and distributors.
         </div>
       )}
 
@@ -50,18 +50,19 @@ export const SourceAttributionList: React.FC<SourceAttributionListProps> = ({
           <Card
             key={src.id}
             padding="md"
-            className="border-slate-200 hover:border-slate-300 transition-all bg-white"
+            hoverEffect
+            className="border-slate-200/90 bg-white"
           >
             <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-2.5">
               <div>
                 <div className="flex items-center gap-2 flex-wrap mb-1">
-                  <span className="font-semibold text-slate-900 text-sm">
+                  <span className="font-bold text-slate-900 text-sm">
                     {src.sourceName}
                   </span>
                   <span className="text-xs font-mono text-slate-400">
                     ({src.sourceDomain})
                   </span>
-                  <span className="text-[11px] capitalize px-2 py-0.5 rounded bg-slate-100 text-slate-600 font-medium">
+                  <span className="text-[11px] capitalize px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 font-medium">
                     {src.sourceType.replace('_', ' ')}
                   </span>
                 </div>
@@ -72,7 +73,7 @@ export const SourceAttributionList: React.FC<SourceAttributionListProps> = ({
 
               {/* Observed Price */}
               <div className="shrink-0 sm:text-right">
-                <div className="text-lg font-bold font-mono text-slate-900">
+                <div className="text-lg sm:text-xl font-bold font-mono text-slate-900">
                   {formatCurrency(src.observedPrice, src.currency)}
                 </div>
                 <span className="text-[11px] text-slate-400 font-mono">
@@ -82,15 +83,15 @@ export const SourceAttributionList: React.FC<SourceAttributionListProps> = ({
             </div>
 
             {/* Extracted snippet quote */}
-            <div className="p-3 rounded-lg bg-slate-50 border border-slate-100 text-xs text-slate-600 font-sans leading-relaxed mb-3 italic">
+            <div className="p-3 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-600 font-sans leading-relaxed mb-3 italic">
               "{src.extractedSnippet}"
             </div>
 
             {/* Footer metadata */}
-            <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2 border-t border-slate-100">
+            <div className="flex items-center justify-between text-[11px] text-slate-400 pt-2.5 border-t border-slate-100 font-mono">
               <div className="flex items-center gap-3">
                 <span className="flex items-center gap-1">
-                  <Calendar className="w-3 h-3" />
+                  <Calendar className="w-3 h-3 text-slate-400" />
                   <span>Observed: {src.observationDate}</span>
                 </span>
                 <span className="hidden sm:inline">•</span>
@@ -99,10 +100,17 @@ export const SourceAttributionList: React.FC<SourceAttributionListProps> = ({
                 </span>
               </div>
 
-              <span className="inline-flex items-center gap-1 text-indigo-600 hover:text-indigo-800 font-medium text-xs">
-                <span>Reference link</span>
-                <ExternalLink className="w-3 h-3" />
-              </span>
+              {src.sourceUrl && (
+                <a
+                  href={src.sourceUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-teal-700 hover:text-teal-900 font-sans font-semibold transition-colors"
+                >
+                  <span>View Source</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              )}
             </div>
           </Card>
         ))}

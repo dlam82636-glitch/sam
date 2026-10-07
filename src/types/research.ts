@@ -4,6 +4,33 @@
  * and retrieval status from commercial suppliers and distributors.
  */
 
+export type SourceClassification =
+  | 'PRICE_SOURCE'
+  | 'SPECIFICATION_SOURCE'
+  | 'MANUFACTURER_SOURCE'
+  | 'MARKETPLACE'
+  | 'RETAILER'
+  | 'DISTRIBUTOR'
+  | 'GENERAL_REFERENCE';
+
+export type SourceRole =
+  // Commercial price sources
+  | 'retailer'
+  | 'marketplace'
+  | 'distributor'
+  | 'manufacturer_store'
+  | 'official_brand_store'
+  | 'commercial_listing'
+  // Reference sources
+  | 'manufacturer_information'
+  | 'specification_reference'
+  | 'review'
+  | 'news'
+  | 'blog'
+  | 'general_information';
+
+export type SourceRoleGroup = 'PRICE_EVIDENCE' | 'REFERENCE_RESEARCH';
+
 export interface NormalizedResearchResult {
   source: string;
   title: string;
@@ -18,6 +45,15 @@ export interface NormalizedResearchResult {
   retrievedAt: string;
   rawSnippet?: string;
   isRelevantMatch?: boolean;
+  classification?: SourceClassification;
+  sourceRole?: SourceRole;
+  sourceRoleGroup?: SourceRoleGroup;
+  isCommercialPriceSource?: boolean;
+  isNigerianSource?: boolean;
+  location?: string | null;
+  unit?: string | null;
+  packQuantity?: number | null;
+  packUnit?: string | null;
 }
 
 export type ResearchStatus =

@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 import { handleSearchRequest } from './src/server/searchController.ts';
 import { searchRateLimiter } from './src/server/security/rateLimiter.ts';
 
-dotenv.config();
+dotenv.config({ override: true });
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -37,6 +37,9 @@ app.use((_req, res, next) => {
 
 // Security: Limit request body payload size (protect against large memory flood attacks)
 app.use(express.json({ limit: '64kb' }));
+
+// Serve static assets from public folder (e.g. /images/*)
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Health / Diagnostics endpoint (Strict: never leaks secret values)
 app.get('/api/health', (_req, res) => {

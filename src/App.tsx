@@ -13,7 +13,7 @@ export default function App() {
   const [isArchitectureModalOpen, setIsArchitectureModalOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 antialiased selection:bg-indigo-100 selection:text-indigo-900">
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 antialiased selection:bg-teal-100 selection:text-teal-900">
       {/* Header Navigation */}
       <Navbar
         onOpenArchitectureModal={() => setIsArchitectureModalOpen(true)}

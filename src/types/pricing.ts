@@ -4,8 +4,37 @@
  * confidence ratings, and documented market limitations.
  */
 
+import { SourceClassification, SourceRole, SourceRoleGroup } from './research';
+
 export type PricingConfidence = 'low' | 'medium' | 'high';
 export type ConfidenceRating = 'HIGH' | 'MODERATE' | 'LOW' | 'PRELIMINARY';
+
+export type ExclusionReason =
+  | 'non_commercial_source'
+  | 'variant_mismatch'
+  | 'pack_size_mismatch'
+  | 'market_mismatch'
+  | 'invalid_price'
+  | 'statistical_outlier';
+
+export interface ExcludedObservation {
+  source: string;
+  title: string;
+  price: number | null;
+  currency: string | null;
+  reason: ExclusionReason;
+  explanation: string;
+  url?: string;
+}
+
+export interface EvidenceCounts {
+  totalResearchSources: number;        // total external results retrieved
+  referenceSourcesCount: number;       // technical specs, reviews, reference sites
+  commercialSourcesCount: number;      // commercial listings retrieved
+  usablePriceObservations: number;     // eligible commercial quotes matching product, variant & market
+  comparableListingsCount: number;     // final non-outlier quotes used in the median estimate
+  excludedObservationsCount: number;   // commercial quotes excluded (variant mismatch, market mismatch, outlier)
+}
 
 export interface PriceObservation {
   source: string;
@@ -19,6 +48,14 @@ export interface PriceObservation {
   url: string;
   isOutlier?: boolean;
   varianceNote?: string;
+  classification?: SourceClassification;
+  sourceRole?: SourceRole;
+  sourceRoleGroup?: SourceRoleGroup;
+  isNigerianSource?: boolean;
+  location?: string | null;
+  unit?: string | null;
+  packQuantity?: number | null;
+  packUnit?: string | null;
 }
 
 export interface PricingIntelligenceResult {
@@ -28,10 +65,14 @@ export interface PricingIntelligenceResult {
   estimatedPrice: number | null;
   confidence: PricingConfidence;
   priceObservations: PriceObservation[];
+  excludedObservations?: ExcludedObservation[];
+  counts: EvidenceCounts;
   methodology: string;
   limitations: string[];
   sampleSize: number;
   spreadPercent?: number;
+  isForeignMarketEvidence?: boolean;
+  nigerianSourceCount?: number;
 }
 
 // Retain legacy interface compatibility for shared types

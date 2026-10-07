@@ -19,7 +19,7 @@ export const QueryInterpretationCard: React.FC<QueryInterpretationCardProps> = (
         aria-expanded={isExpanded}
       >
         <div className="flex items-center gap-3">
-          <div className="p-1.5 rounded-md bg-indigo-50 border border-indigo-200 text-indigo-700">
+          <div className="p-1.5 rounded-lg bg-teal-50 border border-teal-200 text-teal-700">
             <Sparkles className="w-4 h-4" />
           </div>
           <div>
@@ -33,7 +33,7 @@ export const QueryInterpretationCard: React.FC<QueryInterpretationCardProps> = (
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-indigo-600 font-medium hidden sm:inline">
+          <span className="text-xs text-teal-700 font-semibold hidden sm:inline">
             {isExpanded ? 'Hide Pipeline Details' : 'View Pipeline Strategy'}
           </span>
           {isExpanded ? (

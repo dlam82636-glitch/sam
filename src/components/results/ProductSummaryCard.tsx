@@ -1,5 +1,4 @@
 import React from 'react';
-import { Box, Layers, Tag, Building2, Check, ArrowRight } from 'lucide-react';
 import { PhysicalProduct } from '@/src/types';
 import { Card } from '@/src/components/ui/Card';
 import { Badge } from '@/src/components/ui/Badge';
@@ -10,10 +9,10 @@ export interface ProductSummaryCardProps {
 
 export const ProductSummaryCard: React.FC<ProductSummaryCardProps> = ({ product }) => {
   return (
-    <Card className="border-slate-200/90 shadow-xs" padding="lg">
+    <Card className="border-slate-200/90 shadow-card" padding="lg">
       {/* Category Hierarchy */}
       <div className="flex items-center gap-2 flex-wrap mb-2.5">
-        <Badge variant="neutral" size="sm" className="font-mono">
+        <Badge variant="teal" size="sm" className="font-mono">
           {product.primaryCategory}
         </Badge>
         {product.subCategory && (
@@ -59,7 +58,7 @@ export const ProductSummaryCard: React.FC<ProductSummaryCardProps> = ({ product 
               <ul className="space-y-1.5">
                 {product.commonApplications.map((app, i) => (
                   <li key={i} className="flex items-start gap-2 text-xs text-slate-700">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 mt-1.5 shrink-0" />
+                    <span className="w-1.5 h-1.5 rounded-full bg-teal-600 mt-1.5 shrink-0" />
                     <span>{app}</span>
                   </li>
                 ))}
@@ -79,7 +78,7 @@ export const ProductSummaryCard: React.FC<ProductSummaryCardProps> = ({ product 
                 {product.knownBrandsOrManufacturers.map((brand, i) => (
                   <span
                     key={i}
-                    className="inline-flex items-center px-2 py-0.5 rounded bg-slate-100 text-slate-700 text-xs font-medium"
+                    className="inline-flex items-center px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 text-xs font-medium"
                   >
                     {brand}
                   </span>
@@ -97,21 +96,25 @@ export const ProductSummaryCard: React.FC<ProductSummaryCardProps> = ({ product 
                 {product.variants.map((v) => (
                   <div
                     key={v.id}
-                    className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/80 text-xs"
+                    className="p-3 rounded-xl bg-slate-50 border border-slate-200/80 text-xs"
                   >
                     <div className="flex items-center justify-between mb-1">
-                      <span className="font-semibold text-slate-900">{v.title}</span>
+                      <span className="font-semibold text-slate-800">{v.title}</span>
                       {v.approximateRelativeCost && (
-                        <span className="text-[10px] uppercase font-mono px-1.5 py-0.5 rounded bg-slate-200 text-slate-700">
+                        <span className="font-mono text-[10px] uppercase px-1.5 py-0.5 rounded bg-slate-200/70 text-slate-600">
                           {v.approximateRelativeCost} cost tier
                         </span>
                       )}
                     </div>
-                    <div className="text-[11px] text-slate-500 flex flex-wrap gap-2">
-                      {v.distinguishingFeatures.map((feat, idx) => (
-                        <span key={idx}>• {feat}</span>
-                      ))}
-                    </div>
+                    {v.distinguishingFeatures && v.distinguishingFeatures.length > 0 && (
+                      <div className="text-[11px] text-slate-500 flex flex-wrap gap-1.5 mt-1">
+                        {v.distinguishingFeatures.map((feat, idx) => (
+                          <span key={idx} className="bg-white border border-slate-200/60 px-1.5 py-0.5 rounded font-mono">
+                            {feat}
+                          </span>
+                        ))}
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>

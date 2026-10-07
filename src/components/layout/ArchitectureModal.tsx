@@ -22,7 +22,7 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ isOpen, on
         {/* Modal Header */}
         <div className="px-6 py-4 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
           <div className="flex items-center gap-2.5">
-            <div className="p-1.5 rounded-md bg-indigo-50 border border-indigo-200 text-indigo-700">
+            <div className="p-1.5 rounded-md bg-teal-50 border border-teal-200 text-teal-700">
               <Layers className="w-5 h-5" />
             </div>
             <div>
@@ -30,7 +30,7 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ isOpen, on
                 System Architecture & Stage Roadmap
               </h3>
               <p className="text-xs text-slate-700">
-                Specification for MarketSpec text-search product intelligence
+                Specification for PRICERA text-search product intelligence
               </p>
             </div>
           </div>
@@ -46,11 +46,11 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ isOpen, on
         {/* Modal Scrollable Content */}
         <div className="p-6 overflow-y-auto space-y-6 text-sm text-slate-700">
           {/* Current Stage Status Notice */}
-          <div className="p-4 rounded-xl bg-indigo-50/60 border border-indigo-100 flex items-start gap-3">
-            <ShieldCheck className="w-5 h-5 text-indigo-600 mt-0.5 shrink-0" />
+          <div className="p-4 rounded-xl bg-teal-50/60 border border-teal-100 flex items-start gap-3">
+            <ShieldCheck className="w-5 h-5 text-teal-600 mt-0.5 shrink-0" />
             <div>
               <h4 className="font-semibold text-teal-950 text-xs uppercase tracking-wider mb-1">
-                Current Scope: Prompts 1–6 Complete (PRICERA Engine Live)
+                Current Scope: Full PRICERA Engine Live
               </h4>
               <p className="text-xs text-teal-900/90 leading-relaxed">
                 The full four-stage PRICERA engine (Understand → Research → Compare → Estimate) is active. User queries are validated, structured by Gemini into technical specs, processed through the Product Research Layer across commercial catalogs, and evaluated by the Pricing Intelligence Engine with median estimates and documented limitations.
@@ -64,28 +64,28 @@ export const ArchitectureModal: React.FC<ArchitectureModalProps> = ({ isOpen, on
               Proposed Pipeline Data Flow
             </h4>
             <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xs text-slate-700 space-y-2">
-              <div className="flex items-center gap-2 text-indigo-700 font-medium">
+              <div className="flex items-center gap-2 text-teal-800 font-medium">
                 <span>[1] User Query (Text)</span>
                 <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
                 <span>Client Validation (Sanitization, Bounds)</span>
               </div>
-              <div className="pl-4 border-l-2 border-indigo-200 flex items-center gap-2">
+              <div className="pl-4 border-l-2 border-teal-200 flex items-center gap-2">
                 <ArrowRight className="w-3 h-3 text-slate-400" />
                 <span>[2] Server Research Coordinator Request</span>
               </div>
-              <div className="pl-4 border-l-2 border-indigo-200 flex items-center gap-2">
+              <div className="pl-4 border-l-2 border-teal-200 flex items-center gap-2">
                 <ArrowRight className="w-3 h-3 text-slate-400" />
                 <span>[3] AI Query Understanding (Category, Specs, Intent)</span>
               </div>
-              <div className="pl-4 border-l-2 border-indigo-200 flex items-center gap-2">
+              <div className="pl-4 border-l-2 border-teal-200 flex items-center gap-2">
                 <ArrowRight className="w-3 h-3 text-slate-400" />
                 <span>[4] Search Query Generation (Distributors, B2B, Retailers)</span>
               </div>
-              <div className="pl-4 border-l-2 border-indigo-200 flex items-center gap-2">
+              <div className="pl-4 border-l-2 border-teal-200 flex items-center gap-2">
                 <ArrowRight className="w-3 h-3 text-slate-400" />
                 <span>[5] Web Research Retrieval & Fact Extraction</span>
               </div>
-              <div className="pl-4 border-l-2 border-indigo-200 flex items-center gap-2">
+              <div className="pl-4 border-l-2 border-teal-200 flex items-center gap-2">
                 <ArrowRight className="w-3 h-3 text-slate-400" />
                 <span>[6] Pricing Intelligence (IQR Median, Confidence, Assumptions)</span>
               </div>

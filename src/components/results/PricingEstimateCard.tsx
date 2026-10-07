@@ -1,5 +1,5 @@
 import React from 'react';
-import { TrendingUp, ShieldCheck, HelpCircle, Layers, BarChart3, AlertCircle } from 'lucide-react';
+import { TrendingUp, ShieldCheck, BarChart3 } from 'lucide-react';
 import { PriceEstimate, ConfidenceRating } from '@/src/types';
 import { Card } from '@/src/components/ui/Card';
 import { Badge } from '@/src/components/ui/Badge';
@@ -17,36 +17,32 @@ export const PricingEstimateCard: React.FC<PricingEstimateCardProps> = ({ estima
       case 'HIGH':
         return <Badge variant="success">High Confidence ({sampleSize} sources)</Badge>;
       case 'MODERATE':
-        return <Badge variant="info">Moderate Confidence ({sampleSize} sources)</Badge>;
+        return <Badge variant="teal">Moderate Confidence ({sampleSize} sources)</Badge>;
       case 'LOW':
         return <Badge variant="warning">Low Confidence ({sampleSize} sources)</Badge>;
       case 'PRELIMINARY':
       default:
-        return <Badge variant="neutral">Preliminary Prototype ({sampleSize} sources)</Badge>;
+        return <Badge variant="neutral">Preliminary Evidence ({sampleSize} sources)</Badge>;
     }
   };
 
-  // Calculate percentage placement for median on the min-max bar
-  const spread = Math.max(0.01, range.max - range.min);
-  const medianPercentage = Math.min(95, Math.max(5, ((range.median - range.min) / spread) * 100));
-
   return (
-    <Card className="border-slate-200/90 shadow-xs overflow-hidden" padding="none">
+    <Card className="border-slate-200/90 shadow-card overflow-hidden" padding="none">
       {/* Top Header */}
-      <div className="p-5 sm:p-6 bg-slate-900 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 sm:p-7 bg-[#0B1220] text-white flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs uppercase tracking-wider text-slate-400 font-semibold">
-              Market Price Estimate
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="text-[11px] uppercase tracking-wider text-slate-400 font-semibold font-mono">
+              Market Benchmark Price
             </span>
             <span className="text-slate-500">•</span>
-            <span className="text-xs text-indigo-300 font-mono">{range.unit}</span>
+            <span className="text-xs text-teal-300 font-mono">{range.unit}</span>
           </div>
           <div className="flex items-baseline gap-3">
-            <span className="text-3xl sm:text-4xl font-bold tracking-tight text-white font-mono">
+            <span className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white font-mono">
               {formatCurrency(range.median, range.currency)}
             </span>
-            <span className="text-xs text-slate-300">
+            <span className="text-xs text-slate-300 font-medium">
               estimated benchmark median
             </span>
           </div>
@@ -61,15 +57,15 @@ export const PricingEstimateCard: React.FC<PricingEstimateCardProps> = ({ estima
       </div>
 
       {/* Price Range Visual Meter */}
-      <div className="p-5 sm:p-6 border-b border-slate-100 bg-slate-50/50">
-        <div className="flex items-center justify-between text-xs text-slate-500 font-medium mb-2">
+      <div className="p-6 border-b border-slate-100 bg-slate-50/50">
+        <div className="flex items-center justify-between text-xs text-slate-500 font-medium mb-2.5">
           <span>Lower Bound (Volume / Low Tier)</span>
           <span>Upper Bound (Retail / High Tier)</span>
         </div>
 
         {/* Visual Bar */}
         <div className="relative w-full h-3 bg-slate-200 rounded-full overflow-hidden my-3">
-          <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-emerald-400 via-indigo-500 to-amber-500 opacity-80 rounded-full" />
+          <div className="absolute inset-y-0 left-0 right-0 bg-gradient-to-r from-emerald-400 via-teal-500 to-amber-500 opacity-85 rounded-full" />
         </div>
 
         {/* Bound Figures */}
@@ -80,8 +76,8 @@ export const PricingEstimateCard: React.FC<PricingEstimateCardProps> = ({ estima
           </div>
 
           <div className="flex flex-col items-center">
-            <span className="text-[11px] text-indigo-600 font-normal">Median</span>
-            <span className="text-indigo-900 font-bold">{formatCurrency(range.median, range.currency)}</span>
+            <span className="text-[11px] text-teal-700 font-normal">Median</span>
+            <span className="text-teal-900 font-bold">{formatCurrency(range.median, range.currency)}</span>
           </div>
 
           <div className="flex flex-col items-end">
@@ -91,9 +87,9 @@ export const PricingEstimateCard: React.FC<PricingEstimateCardProps> = ({ estima
         </div>
 
         {/* Spread statistic */}
-        <div className="mt-4 pt-3 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
+        <div className="mt-4 pt-3.5 border-t border-slate-200/60 flex items-center justify-between text-xs text-slate-500">
           <div className="flex items-center gap-1.5">
-            <BarChart3 className="w-3.5 h-3.5 text-slate-400" />
+            <BarChart3 className="w-3.5 h-3.5 text-teal-600" />
             <span>Market Spread: <strong>{priceSpreadPercent}% variance</strong> across source observations</span>
           </div>
           <span className="hidden sm:inline text-[11px] text-slate-400 font-mono">Currency: {range.currency}</span>
@@ -101,10 +97,10 @@ export const PricingEstimateCard: React.FC<PricingEstimateCardProps> = ({ estima
       </div>
 
       {/* Market Condition Context */}
-      <div className="p-5 sm:p-6 space-y-4">
+      <div className="p-6 space-y-4">
         <div>
-          <h4 className="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-            <TrendingUp className="w-3.5 h-3.5 text-slate-500" />
+          <h4 className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+            <TrendingUp className="w-3.5 h-3.5 text-teal-600" />
             <span>Market Dynamics & Observations</span>
           </h4>
           <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
@@ -113,10 +109,10 @@ export const PricingEstimateCard: React.FC<PricingEstimateCardProps> = ({ estima
         </div>
 
         {/* Strict Verification Safeguard Notice */}
-        <div className="p-3.5 rounded-lg bg-slate-100/80 border border-slate-200/80 flex items-start gap-2.5 text-xs text-slate-600">
+        <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-start gap-2.5 text-xs text-slate-600">
           <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
           <p className="leading-relaxed">
-            <strong>Strict Attribution Safeguard:</strong> MarketSpec aggregates quotes exclusively from real supplier observations and never presents synthetic AI outputs as verified exact prices.
+            <strong>Strict Attribution Safeguard:</strong> PRICERA aggregates quotes exclusively from real supplier observations and never presents synthetic AI outputs as verified exact prices.
           </p>
         </div>
       </div>

@@ -21,6 +21,7 @@ import {
 } from '@/src/server/ai/queryUnderstandingService';
 import { executeProductResearch } from '@/src/server/research/searchService';
 import { calculatePricingIntelligence } from '@/src/server/pricing/pricingEngine';
+import { extractCommercialOffers } from '@/src/server/commercial/offerService';
 import { PriceraResearchResponse } from '@/src/types/pipeline';
 import { getDatabaseRepository, ResearchSourceRecord } from '@/src/server/db';
 
@@ -139,6 +140,9 @@ export async function handleSearchRequest(req: Request, res: Response): Promise<
         // Step C: Pricing Intelligence Layer (Prompt 6)
         const pricingResult = calculatePricingIntelligence(researchResponse.results, understanding);
 
+        // Step D: Verified Commercial Offers & Buy Links
+        const buyOpportunities = extractCommercialOffers(researchResponse.results, understanding);
+
         // Persist Price Observations linked to Search
         if (pricingResult.priceObservations && pricingResult.priceObservations.length > 0) {
           await repo.savePriceObservations(
@@ -232,11 +236,17 @@ export async function handleSearchRequest(req: Request, res: Response): Promise<
             estimatedPrice: pricingResult.estimatedPrice,
             confidence: pricingResult.confidence,
             priceObservations: pricingResult.priceObservations,
+            excludedObservations: pricingResult.excludedObservations,
+            counts: pricingResult.counts,
             methodology: pricingResult.methodology,
             limitations: pricingResult.limitations,
             sampleSize: pricingResult.sampleSize,
+            isForeignMarketEvidence: pricingResult.isForeignMarketEvidence,
+            nigerianSourceCount: pricingResult.nigerianSourceCount,
           },
           pipeline: pipelineStatus,
+          commercialOffers: buyOpportunities.offers,
+          buyOpportunities,
 
           // Legacy & compatibility aliases
           success: true,

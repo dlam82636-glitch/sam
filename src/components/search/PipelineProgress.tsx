@@ -19,7 +19,6 @@ export const PipelineProgress: React.FC<PipelineProgressProps> = ({
   currentStage,
   stageMessage,
 }) => {
-  // Map internal stage to step index (0 to 4)
   const getStepIndex = (stg: PipelineStage) => {
     switch (stg) {
       case 'validating':
@@ -36,16 +35,16 @@ export const PipelineProgress: React.FC<PipelineProgressProps> = ({
   const activeIndex = getStepIndex(currentStage);
 
   return (
-    <div className="w-full max-w-3xl mx-auto my-8 p-6 rounded-2xl bg-white border border-slate-200 shadow-sm animate-in fade-in duration-200">
+    <div className="w-full max-w-3xl mx-auto my-8 p-6 sm:p-7 rounded-2xl bg-white border border-slate-200/90 shadow-card animate-in fade-in duration-200">
       <div className="flex items-center justify-between mb-4">
         <div>
-          <h3 className="text-sm font-semibold text-slate-900 flex items-center gap-2">
-            <Loader2 className="w-4 h-4 animate-spin text-indigo-600" />
+          <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
+            <Loader2 className="w-4 h-4 animate-spin text-teal-700" />
             <span>AI Query-Understanding Pipeline</span>
           </h3>
           <p className="text-xs text-slate-500 mt-0.5">{stageMessage}</p>
         </div>
-        <span className="text-[11px] font-mono px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-100">
+        <span className="text-[11px] font-mono px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-800 border border-teal-200/80">
           Live Server Execution
         </span>
       </div>
@@ -64,7 +63,7 @@ export const PipelineProgress: React.FC<PipelineProgressProps> = ({
                   isDone
                     ? 'bg-emerald-100 text-emerald-700 border border-emerald-300'
                     : isCurrent
-                    ? 'bg-indigo-600 text-white ring-4 ring-indigo-100'
+                    ? 'bg-teal-700 text-white ring-4 ring-teal-100 shadow-sm'
                     : 'bg-slate-100 text-slate-400 border border-slate-200'
                 }`}
               >
@@ -79,9 +78,9 @@ export const PipelineProgress: React.FC<PipelineProgressProps> = ({
               <span
                 className={`text-[11px] leading-tight font-medium ${
                   isCurrent
-                    ? 'text-indigo-900 font-semibold'
+                    ? 'text-teal-950 font-bold'
                     : isDone
-                    ? 'text-slate-700'
+                    ? 'text-slate-700 font-semibold'
                     : 'text-slate-400'
                 }`}
               >
@@ -93,7 +92,7 @@ export const PipelineProgress: React.FC<PipelineProgressProps> = ({
       </div>
 
       <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
-        <span>Prompt 3 & 4: Server-Side Query Understanding Active</span>
+        <span>PRICERA Server-Side Query Understanding Active</span>
         <span className="font-mono">POST /api/search</span>
       </div>
     </div>

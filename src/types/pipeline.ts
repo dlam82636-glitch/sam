@@ -5,8 +5,9 @@
 
 import { QueryUnderstandingResult } from './queryUnderstanding';
 import { NormalizedResearchResult, ResearchStatus, GeneratedSearchQuery } from './research';
-import { PricingIntelligenceResult, PriceEstimate, PriceObservation } from './pricing';
+import { PricingIntelligenceResult, PriceEstimate, PriceObservation, EvidenceCounts, ExcludedObservation } from './pricing';
 import { PhysicalProduct } from './product';
+import { CommercialOffer, BuyOpportunitiesSummary } from './commercial';
 
 export type SignatureStageId = 'understand' | 'research' | 'compare' | 'estimate';
 
@@ -67,9 +68,13 @@ export interface PricingReportData {
   estimatedPrice: number | null;
   confidence: 'low' | 'medium' | 'high';
   priceObservations: PriceObservation[];
+  excludedObservations?: ExcludedObservation[];
+  counts?: EvidenceCounts;
   methodology: string;
   limitations: string[];
   sampleSize?: number;
+  isForeignMarketEvidence?: boolean;
+  nigerianSourceCount?: number;
 }
 
 export interface PipelineSummaryStatus {
@@ -85,6 +90,8 @@ export interface PriceraResearchResponse {
   research: ResearchReportData;
   pricing: PricingReportData;
   pipeline: PipelineSummaryStatus;
+  commercialOffers?: CommercialOffer[];
+  buyOpportunities?: BuyOpportunitiesSummary;
 
   // Compatibility aliases
   success?: boolean;

@@ -218,4 +218,116 @@ console.log('--- RUNNING PRICERA PRICING INTELLIGENCE TEST SUITE (14 SCENARIOS) 
   console.log('✓ Scenario 14: Search provider failure handling PASSED');
 }
 
-console.log('--- ALL 14 PRICERA PRICING SCENARIOS PASSED WITH ZERO ERRORS ---');
+// Test 15: Specification sources (like GSMArena) excluded from price observations
+{
+  const results: NormalizedResearchResult[] = [
+    {
+      source: 'gsmarena.com',
+      title: 'Samsung Galaxy A55 - Full phone specifications',
+      url: 'https://gsmarena.com/samsung_galaxy_a55-12824.php',
+      seller: 'gsmarena.com',
+      brand: 'Samsung',
+      product: 'Samsung Galaxy A55',
+      price: 350,
+      currency: 'EUR',
+      availability: null,
+      specifications: ['128GB'],
+      retrievedAt: '2026-10-06',
+      classification: 'SPECIFICATION_SOURCE',
+      isCommercialPriceSource: false,
+    },
+    {
+      source: 'slot.ng',
+      title: 'Buy Samsung Galaxy A55 128GB at Slot Nigeria',
+      url: 'https://slot.ng/samsung-a55',
+      seller: 'Slot Systems',
+      brand: 'Samsung',
+      product: 'Samsung Galaxy A55',
+      price: 580000,
+      currency: 'NGN',
+      availability: 'In Stock',
+      specifications: ['128GB'],
+      retrievedAt: '2026-10-06',
+      classification: 'RETAILER',
+      isCommercialPriceSource: true,
+      isNigerianSource: true,
+    },
+  ];
+  const out = calculatePricingIntelligence(results, baseQuery);
+  assert(out.sampleSize === 1, 'Test 15: only the commercial Slot quote was accepted, GSMArena spec was excluded');
+  assert(out.currency === 'NGN', 'Test 15: prioritized Nigerian NGN price');
+  assert(out.estimatedPrice === 580000, 'Test 15: estimated price is 580000 NGN');
+  console.log('✓ Scenario 15: Specification source exclusion & commercial prioritization PASSED');
+}
+
+// Test 16: Foreign-market evidence reporting when only foreign prices exist
+{
+  const results: NormalizedResearchResult[] = [
+    {
+      source: 'bestbuy.com',
+      title: 'Samsung Galaxy A55 128GB Unlocked',
+      url: 'https://bestbuy.com/samsung-a55',
+      seller: 'Best Buy US',
+      brand: 'Samsung',
+      product: 'Samsung Galaxy A55',
+      price: 399,
+      currency: 'USD',
+      availability: 'In Stock',
+      specifications: ['128GB'],
+      retrievedAt: '2026-10-06',
+      classification: 'RETAILER',
+      isCommercialPriceSource: true,
+      isNigerianSource: false,
+    },
+  ];
+  const out = calculatePricingIntelligence(results, baseQuery);
+  assert(out.currency === 'USD', 'Test 16: preserved original currency USD');
+  assert(out.isForeignMarketEvidence === true, 'Test 16: flagged as foreign-market evidence');
+  assert(out.limitations.some((l) => l.includes('foreign-market evidence')), 'Test 16: notes foreign evidence in limitations');
+  console.log('✓ Scenario 16: Foreign-market evidence reporting PASSED');
+}
+
+// Test 17: Nigerian NGN prioritization over foreign quotes when no explicit country is specified
+{
+  const results: NormalizedResearchResult[] = [
+    {
+      source: 'amazon.com',
+      title: 'Samsung Galaxy A55',
+      url: 'https://amazon.com/a55',
+      seller: 'Amazon US',
+      brand: 'Samsung',
+      product: 'Samsung Galaxy A55',
+      price: 410,
+      currency: 'USD',
+      availability: 'In Stock',
+      specifications: ['128GB'],
+      retrievedAt: '2026-10-06',
+      classification: 'MARKETPLACE',
+      isCommercialPriceSource: true,
+      isNigerianSource: false,
+    },
+    {
+      source: 'konga.com',
+      title: 'Samsung Galaxy A55 128GB Lagos',
+      url: 'https://konga.com/a55',
+      seller: 'Konga Nigeria',
+      brand: 'Samsung',
+      product: 'Samsung Galaxy A55',
+      price: 575000,
+      currency: 'NGN',
+      availability: 'In Stock',
+      specifications: ['128GB'],
+      retrievedAt: '2026-10-06',
+      classification: 'MARKETPLACE',
+      isCommercialPriceSource: true,
+      isNigerianSource: true,
+    },
+  ];
+  const out = calculatePricingIntelligence(results, baseQuery);
+  assert(out.currency === 'NGN', 'Test 17: prioritized Nigerian NGN over USD');
+  assert(out.estimatedPrice === 575000, 'Test 17: correct Nigerian price benchmark');
+  assert(out.isForeignMarketEvidence === false, 'Test 17: not flagged as foreign evidence');
+  console.log('✓ Scenario 17: Nigerian NGN prioritization PASSED');
+}
+
+console.log('--- ALL 17 PRICERA PRICING SCENARIOS PASSED WITH ZERO ERRORS ---');

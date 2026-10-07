@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Search, X, AlertCircle } from 'lucide-react';
+import { Search, X, AlertCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/src/components/ui/Button';
 import { validateProductQuery } from '@/src/lib/validation';
 
@@ -30,7 +30,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
     const validation = validateProductQuery(inputValue);
 
     if (!validation.isValid) {
-      setValidationError(validation.errorMessage || 'Please enter a valid query');
+      setValidationError(validation.errorMessage || 'Please enter a valid product or material query');
       inputRef.current?.focus();
       return;
     }
@@ -56,12 +56,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   };
 
   return (
-    <div className="w-full max-w-3xl mx-auto">
+    <div className="w-full">
       <form onSubmit={handleSubmit} className="relative">
-        <div className="relative flex items-center bg-white rounded-2xl border-2 border-slate-200/95 shadow-md hover:border-slate-300 focus-within:border-teal-600 focus-within:ring-4 focus-within:ring-teal-600/15 transition-all duration-200">
+        <div className="relative flex items-center bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-full border border-slate-200/90 shadow-hero-input hover:border-slate-300 focus-within:border-teal-600 focus-within:ring-4 focus-within:ring-teal-600/15 focus-within:shadow-[0_20px_40px_-8px_rgba(15,118,110,0.18)] focus-within:-translate-y-0.5 transition-all duration-250 p-1.5 sm:p-2">
           {/* Leading Search Icon */}
-          <div className="pl-4 sm:pl-5 pr-2 text-slate-400 pointer-events-none flex items-center">
-            <Search className="w-5 h-5 sm:w-6 sm:h-6 text-teal-700" aria-hidden="true" />
+          <div className="pl-4 sm:pl-5 pr-2.5 text-teal-700 pointer-events-none flex items-center shrink-0">
+            <Search className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
           </div>
 
           {/* Text Input */}
@@ -74,12 +74,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
             type="text"
             value={inputValue}
             onChange={handleChange}
-            placeholder="Search for a product or material... (e.g. 12mm marine plywood, cement board)"
+            placeholder="Search a product, material or specification..."
             disabled={isLoading}
             autoComplete="off"
             spellCheck="false"
             maxLength={200}
-            className="w-full py-4 sm:py-5 text-base sm:text-lg font-medium text-slate-900 placeholder:text-slate-400 placeholder:font-normal bg-transparent focus:outline-none disabled:opacity-60"
+            className="w-full py-3.5 sm:py-4 text-base sm:text-lg font-medium text-slate-900 placeholder:text-slate-400 placeholder:font-normal bg-transparent focus:outline-none disabled:opacity-60 tracking-tight"
             aria-describedby={validationError ? 'search-error-message' : undefined}
           />
 
@@ -97,42 +97,46 @@ export const SearchBar: React.FC<SearchBarProps> = ({
           )}
 
           {/* Primary Action Button */}
-          <div className="pr-2 sm:pr-3 shrink-0">
+          <div className="shrink-0">
             <Button
               type="submit"
               variant="primary"
-              size="lg"
+              size="md"
+              pill
               isLoading={isLoading}
-              className="px-5 sm:px-7 font-bold tracking-tight shadow-sm hover:scale-[1.02] active:scale-100 transition-all duration-150"
-              aria-label="Execute search"
+              rightIcon={<ArrowRight className="w-4 h-4" />}
+              className="px-5 sm:px-6 py-3.5 text-sm sm:text-base font-bold shadow-md shadow-teal-950/20 tracking-tight"
+              aria-label="Research Market Price"
             >
-              Search
+              <span className="hidden sm:inline">Research market</span>
+              <span className="sm:hidden">Research</span>
             </Button>
           </div>
         </div>
+
+        {/* Validation Error Banner */}
+        {validationError && (
+          <div
+            id="search-error-message"
+            role="alert"
+            className="mt-3 p-3 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs font-medium flex items-center gap-2 animate-in fade-in duration-200"
+          >
+            <AlertCircle className="w-4 h-4 text-rose-600 shrink-0" />
+            <span>{validationError}</span>
+          </div>
+        )}
+
+        {/* Warning Notification */}
+        {warningMessage && !validationError && (
+          <div
+            role="status"
+            className="mt-3 p-2.5 rounded-xl bg-amber-50 border border-amber-200 text-amber-800 text-xs flex items-center gap-2 animate-in fade-in duration-200"
+          >
+            <AlertCircle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+            <span>{warningMessage}</span>
+          </div>
+        )}
       </form>
-
-      {/* Validation or Format Warnings */}
-      {validationError && (
-        <div
-          id="search-error-message"
-          role="alert"
-          className="mt-2.5 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs sm:text-sm animate-in fade-in"
-        >
-          <AlertCircle className="w-4 h-4 shrink-0 text-rose-500" />
-          <span>{validationError}</span>
-        </div>
-      )}
-
-      {warningMessage && !validationError && (
-        <div
-          role="status"
-          className="mt-2 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-amber-50 border border-amber-200 text-amber-800 text-xs animate-in fade-in"
-        >
-          <span className="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-          <span>{warningMessage}</span>
-        </div>
-      )}
     </div>
   );
 };

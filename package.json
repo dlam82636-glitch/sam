@@ -10,7 +10,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist server.js",
     "lint": "tsc --noEmit",
-    "test": "tsx src/server/security/securityAndAudit.test.ts && tsx src/server/pricing/pricingEngine.test.ts && tsx src/server/db/databaseRepository.test.ts"
+    "test": "tsx src/server/security/securityAndAudit.test.ts && tsx src/server/pricing/pricingEngine.test.ts && tsx src/server/db/databaseRepository.test.ts && tsx src/server/commercial/offerService.test.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

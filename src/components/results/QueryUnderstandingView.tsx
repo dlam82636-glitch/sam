@@ -94,20 +94,20 @@ export const QueryUnderstandingView: React.FC<QueryUnderstandingViewProps> = ({
       </div>
 
       {/* Stage Status Banner (Prompts 3 & 4) */}
-      <div className="p-4 rounded-xl bg-indigo-50/70 border border-indigo-200/90 text-indigo-950 shadow-2xs">
+      <div className="p-4 rounded-xl bg-teal-50/70 border border-teal-200/90 text-teal-950 shadow-2xs">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-start gap-2.5">
-            <Sparkles className="w-5 h-5 text-indigo-600 shrink-0 mt-0.5" />
+            <Sparkles className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
             <div>
               <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-semibold text-xs uppercase tracking-wider text-indigo-950">
+                <span className="font-semibold text-xs uppercase tracking-wider text-teal-950">
                   AI Query-Understanding Stage Active
                 </span>
-                <Badge variant="info" size="sm" className="font-mono text-[10px]">
+                <Badge variant="teal" size="sm" className="font-mono text-[10px]">
                   Real Server-Side AI
                 </Badge>
               </div>
-              <p className="text-xs text-indigo-900/90 mt-0.5 leading-relaxed">
+              <p className="text-xs text-teal-900/90 mt-0.5 leading-relaxed">
                 The product query has been parsed and structured into verified technical parameters by the server-side AI model. Web retrieval, supplier scraping, and pricing calculations are deliberately decoupled and will be connected in subsequent stages.
               </p>
             </div>
@@ -116,7 +116,7 @@ export const QueryUnderstandingView: React.FC<QueryUnderstandingViewProps> = ({
           {onOpenArchitectureModal && (
             <button
               onClick={onOpenArchitectureModal}
-              className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-100/80 hover:bg-indigo-200/70 border border-indigo-300/80 text-indigo-900 text-xs font-medium transition-colors cursor-pointer"
+              className="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-teal-100/80 hover:bg-teal-200/70 border border-teal-300/80 text-teal-900 text-xs font-medium transition-colors cursor-pointer"
             >
               <GitBranch className="w-3.5 h-3.5" />
               <span>Pipeline Specs</span>
@@ -233,7 +233,7 @@ export const QueryUnderstandingView: React.FC<QueryUnderstandingViewProps> = ({
                       key={i}
                       className="p-2.5 rounded-lg bg-slate-50 border border-slate-200/70 text-xs text-slate-700 flex items-center gap-2"
                     >
-                      <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0" />
+                      <span className="w-1.5 h-1.5 rounded-full bg-teal-600 shrink-0" />
                       <span>{variant}</span>
                     </div>
                   ))}
@@ -264,7 +264,7 @@ export const QueryUnderstandingView: React.FC<QueryUnderstandingViewProps> = ({
                   confidencePercent >= 80
                     ? 'bg-emerald-500'
                     : confidencePercent >= 50
-                    ? 'bg-blue-500'
+                    ? 'bg-teal-500'
                     : 'bg-amber-500'
                 }`}
                 style={{ width: `${confidencePercent}%` }}
@@ -275,7 +275,7 @@ export const QueryUnderstandingView: React.FC<QueryUnderstandingViewProps> = ({
           {/* Research Queries Prepared for Future Stage */}
           <Card className="border-slate-200/90 shadow-xs" padding="md">
             <div className="flex items-center gap-2 mb-2">
-              <Search className="w-4 h-4 text-indigo-600" />
+              <Search className="w-4 h-4 text-teal-600" />
               <h4 className="text-xs font-semibold text-slate-900 uppercase tracking-wider">
                 Generated Research Queries
               </h4>
