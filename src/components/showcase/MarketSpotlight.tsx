@@ -1,6 +1,5 @@
-import React from 'react';
-import { Sparkles, ArrowRight, ExternalLink, ShieldCheck, Tag } from 'lucide-react';
-import { Badge } from '@/src/components/ui/Badge';
+import React, { useRef } from 'react';
+import { ArrowRight, ChevronLeft, ChevronRight, ShieldCheck } from 'lucide-react';
 
 export interface SpotlightItem {
   id: string;
@@ -17,7 +16,7 @@ export interface SpotlightItem {
 const SPOTLIGHT_ITEMS: SpotlightItem[] = [
   {
     id: 'spotlight-1',
-    badge: 'Featured • Demo Product',
+    badge: 'Demo Spec',
     brand: 'Samsung',
     product: 'Galaxy A55 5G (256GB)',
     category: 'Consumer Electronics',
@@ -28,7 +27,7 @@ const SPOTLIGHT_ITEMS: SpotlightItem[] = [
   },
   {
     id: 'spotlight-2',
-    badge: 'Sponsored • Demo Brand',
+    badge: 'Demo Spec',
     brand: 'TimberCore Solutions',
     product: 'BS 1088 Marine Plywood (12mm)',
     category: 'Building Materials',
@@ -39,7 +38,7 @@ const SPOTLIGHT_ITEMS: SpotlightItem[] = [
   },
   {
     id: 'spotlight-3',
-    badge: 'Featured • Demo Product',
+    badge: 'Demo Spec',
     brand: 'ErgoForm Commercial',
     product: 'Vanguard Ergonomic Task Chair',
     category: 'Commercial Furniture',
@@ -50,7 +49,7 @@ const SPOTLIGHT_ITEMS: SpotlightItem[] = [
   },
   {
     id: 'spotlight-4',
-    badge: 'Sponsored • Demo Brand',
+    badge: 'Demo Spec',
     brand: 'Apex Piping & Alloy',
     product: '2-inch Stainless Steel Pipe Sch 40',
     category: 'Metals & Piping',
@@ -61,7 +60,7 @@ const SPOTLIGHT_ITEMS: SpotlightItem[] = [
   },
   {
     id: 'spotlight-5',
-    badge: 'Featured • Demo Product',
+    badge: 'Demo Spec',
     brand: 'ProSubstrate Systems',
     product: 'Cement Backer Board 1/2 in.',
     category: 'Tile Substrates',
@@ -72,7 +71,7 @@ const SPOTLIGHT_ITEMS: SpotlightItem[] = [
   },
   {
     id: 'spotlight-6',
-    badge: 'Sponsored • Demo Brand',
+    badge: 'Demo Spec',
     brand: 'Industrial Shield PPE',
     product: 'ANSI Type 1 Ratchet Hard Hat',
     category: 'Safety Equipment',
@@ -88,16 +87,29 @@ export interface MarketSpotlightProps {
 }
 
 export const MarketSpotlight: React.FC<MarketSpotlightProps> = ({ onSelectQuery }) => {
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   // Duplicate array for seamless infinite marquee loop
   const marqueeItems = [...SPOTLIGHT_ITEMS, ...SPOTLIGHT_ITEMS];
 
+  const handleManualScroll = (direction: 'left' | 'right') => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 340;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      });
+    }
+  };
+
   return (
     <section
+      id="spotlight"
       aria-label="Market Spotlight Product Showcase"
       className="w-full my-14 pt-8 pb-10 border-y border-slate-200/80 bg-gradient-to-b from-slate-50 via-white to-slate-50/50 overflow-hidden"
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 mb-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
           <div>
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-teal-600 animate-pulse" />
@@ -105,16 +117,35 @@ export const MarketSpotlight: React.FC<MarketSpotlightProps> = ({ onSelectQuery 
                 Market Spotlight
               </h3>
               <span className="text-xs text-slate-400 font-mono hidden sm:inline">
-                • Continuous Industry Showcase
+                · Representative Product Showcase
               </span>
             </div>
             <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-              Discover products and brands worth exploring.
+              Select any example product or material to research live market specifications and pricing.
             </p>
           </div>
 
-          <div className="text-[11px] text-slate-400 font-mono">
-            Pause on hover or keyboard focus
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-slate-400 font-mono mr-2 hidden sm:inline">
+              Pause on hover · Click to inspect
+            </span>
+            {/* Accessible Manual Controls */}
+            <button
+              type="button"
+              onClick={() => handleManualScroll('left')}
+              className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:text-teal-800 hover:border-teal-500 transition-colors shadow-2xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500"
+              aria-label="Scroll spotlight left"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => handleManualScroll('right')}
+              className="p-1.5 rounded-lg border border-slate-200 bg-white text-slate-600 hover:text-teal-800 hover:border-teal-500 transition-colors shadow-2xs cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500"
+              aria-label="Scroll spotlight right"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </div>
@@ -128,10 +159,11 @@ export const MarketSpotlight: React.FC<MarketSpotlightProps> = ({ onSelectQuery 
 
         {/* Scrolling track */}
         <div
+          ref={scrollContainerRef}
           tabIndex={0}
           role="region"
           aria-label="Scrolling product showcase"
-          className="animate-marquee flex gap-4 px-4 select-none focus:outline-none"
+          className="animate-marquee flex gap-4 px-4 select-none focus:outline-none overflow-x-auto scrollbar-none"
         >
           {marqueeItems.map((item, idx) => (
             <article
@@ -149,9 +181,9 @@ export const MarketSpotlight: React.FC<MarketSpotlightProps> = ({ onSelectQuery 
               aria-label={`Inspect ${item.product} by ${item.brand}`}
             >
               <div>
-                {/* Header badge */}
-                <div className="flex items-center justify-between gap-2 mb-2">
-                  <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200 group-hover:bg-teal-50 group-hover:text-teal-800 group-hover:border-teal-200 transition-colors">
+                {/* Header metadata */}
+                <div className="flex items-center justify-between gap-2 mb-2 text-xs text-slate-500">
+                  <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-teal-50 text-teal-800 border border-teal-200/60 font-medium">
                     {item.badge}
                   </span>
                   <span className="text-[10px] font-mono text-slate-400">
@@ -172,7 +204,7 @@ export const MarketSpotlight: React.FC<MarketSpotlightProps> = ({ onSelectQuery 
                   {item.description}
                 </p>
 
-                {/* Specs pill */}
+                {/* Specs box */}
                 <div className="mt-3 p-2 rounded bg-slate-50 border border-slate-100 text-[11px] font-mono text-slate-600">
                   {item.specsSummary}
                 </div>

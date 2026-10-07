@@ -38,22 +38,26 @@ export async function executeSearchQuery(
   }
 
   // Visual signature pipeline progression
-  onStageTransition?.('understand', 'Analyzing product specifications, variants, and query intent with AI...');
+  onStageTransition?.('understand', 'Understanding your product: Identifying product type, brand, specifications and variants.');
 
   const requestPromise = (async () => {
+    let stepTimer1: NodeJS.Timeout | undefined;
+    let stepTimer2: NodeJS.Timeout | undefined;
+    let stepTimer3: NodeJS.Timeout | undefined;
+
     try {
-      // Simulate pipeline progression visual signals while backend runs
-      const stepTimer1 = setTimeout(() => {
-        onStageTransition?.('research', 'Dispatching prospective supplier queries across catalogs...');
-      }, 700);
+      // Realistic pipeline progression visual signals while backend analyzes
+      stepTimer1 = setTimeout(() => {
+        onStageTransition?.('research', 'Researching the market: Looking across available sources for comparable products and prices.');
+      }, 1200);
 
-      const stepTimer2 = setTimeout(() => {
-        onStageTransition?.('compare', 'Grouping listings, normalizing currencies, and checking variant match...');
-      }, 1600);
+      stepTimer2 = setTimeout(() => {
+        onStageTransition?.('compare', 'Comparing prices: Checking comparable observations and filtering mismatched variants.');
+      }, 2600);
 
-      const stepTimer3 = setTimeout(() => {
-        onStageTransition?.('estimate', 'Executing median pricing algorithm and evaluating confidence...');
-      }, 2400);
+      stepTimer3 = setTimeout(() => {
+        onStageTransition?.('estimate', 'Estimating market price: Calculating a transparent estimate from available evidence.');
+      }, 4000);
 
       const response = await fetch('/api/search', {
         method: 'POST',
@@ -64,9 +68,9 @@ export async function executeSearchQuery(
         signal,
       });
 
-      clearTimeout(stepTimer1);
-      clearTimeout(stepTimer2);
-      clearTimeout(stepTimer3);
+      if (stepTimer1) clearTimeout(stepTimer1);
+      if (stepTimer2) clearTimeout(stepTimer2);
+      if (stepTimer3) clearTimeout(stepTimer3);
 
       let json: any;
       try {
@@ -84,6 +88,10 @@ export async function executeSearchQuery(
 
       return json as PriceraResearchResponse;
     } finally {
+      if (stepTimer1) clearTimeout(stepTimer1);
+      if (stepTimer2) clearTimeout(stepTimer2);
+      if (stepTimer3) clearTimeout(stepTimer3);
+
       if (activeQueryPromise && activeQueryPromise.query === normalizedKey) {
         activeQueryPromise = null;
       }

@@ -40,8 +40,8 @@ export function validateProductQuery(rawQuery: string): ValidationResult {
     };
   }
 
-  // 4. Pure symbol or non-alphanumeric check
-  const hasAlphanumeric = /[a-zA-Z0-9]/.test(trimmed);
+  // 4. Pure symbol or non-alphanumeric check (Unicode-aware: supports accented letters, Cyrillic, Asian scripts, etc.)
+  const hasAlphanumeric = /[a-zA-Z0-9]|\p{L}|\p{N}/u.test(trimmed);
   if (!hasAlphanumeric) {
     return {
       isValid: false,
@@ -138,8 +138,8 @@ export function validateServerSearchRequest(body: unknown): ServerValidationResu
     };
   }
 
-  // Check for at least one letter or digit
-  if (!/[a-zA-Z0-9]/.test(cleaned)) {
+  // Check for at least one letter or digit (Unicode-aware: supports all scripts and accented characters)
+  if (!(/[a-zA-Z0-9]|\p{L}|\p{N}/u.test(cleaned))) {
     return {
       isValid: false,
       sanitizedQuery: cleaned,

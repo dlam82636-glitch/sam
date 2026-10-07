@@ -4,14 +4,16 @@
 
 export function formatCurrency(amount: number, currency: string = 'USD'): string {
   try {
+    const isInteger = amount % 1 === 0;
     return new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: currency,
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
+      minimumFractionDigits: isInteger ? 0 : 2,
+      maximumFractionDigits: isInteger ? 0 : 2,
     }).format(amount);
   } catch {
-    return `${currency} ${amount.toFixed(2)}`;
+    const isInteger = amount % 1 === 0;
+    return `${currency} ${isInteger ? amount.toLocaleString() : amount.toFixed(2)}`;
   }
 }
 

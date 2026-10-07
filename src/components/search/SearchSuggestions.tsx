@@ -33,11 +33,11 @@ export const SearchSuggestions: React.FC<SearchSuggestionsProps> = ({
             type="button"
             disabled={disabled}
             onClick={() => onSelectSuggestion(item.label)}
-            className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200/90 text-xs text-slate-700 hover:text-slate-900 hover:border-teal-400 hover:bg-teal-50/50 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1 transition-all duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-2xs"
+            className="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs text-slate-700 hover:text-teal-900 hover:border-teal-500 hover:bg-teal-50/60 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-1 transition-all duration-150 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-2xs hover:scale-[1.02] active:scale-100"
           >
-            <span className="font-medium group-hover:text-teal-900">{item.label}</span>
-            <span className="text-[10px] text-slate-500 group-hover:text-teal-700 font-mono hidden sm:inline">
-              • {item.category}
+            <span className="font-semibold text-slate-800 group-hover:text-teal-900">{item.label}</span>
+            <span className="text-[10px] text-slate-400 group-hover:text-teal-700 font-mono hidden sm:inline">
+              · {item.category}
             </span>
           </button>
         ))}

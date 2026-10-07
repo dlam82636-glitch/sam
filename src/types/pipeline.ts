@@ -5,12 +5,12 @@
 
 import { QueryUnderstandingResult } from './queryUnderstanding';
 import { NormalizedResearchResult, ResearchStatus, GeneratedSearchQuery } from './research';
-import { PricingIntelligenceResult, PriceEstimate } from './pricing';
+import { PricingIntelligenceResult, PriceEstimate, PriceObservation } from './pricing';
 import { PhysicalProduct } from './product';
 
 export type SignatureStageId = 'understand' | 'research' | 'compare' | 'estimate';
 
-export type StageState = 'waiting' | 'processing' | 'complete' | 'failed';
+export type StageState = 'idle' | 'processing' | 'complete' | 'failed' | 'unavailable';
 
 export interface SignaturePipelineStep {
   id: SignatureStageId;
@@ -19,21 +19,79 @@ export interface SignaturePipelineStep {
   state: StageState;
 }
 
-export interface PriceraResearchResponse {
-  success: boolean;
+export type SearchState =
+  | 'idle'
+  | 'validating'
+  | 'understanding'
+  | 'researching'
+  | 'analyzing'
+  | 'complete'
+  | 'partial'
+  | 'failed'
+  | 'unavailable';
+
+export interface SearchMetadata {
   query: string;
-  normalizedQuery: string;
-  understanding: QueryUnderstandingResult;
-  research: {
-    status: ResearchStatus;
-    provider: string;
-    executedQueries: string[];
-    results: NormalizedResearchResult[];
-    totalFound: number;
-    message?: string;
-  };
-  pricing: PricingIntelligenceResult;
-  executionTimeMs: number;
+  timestamp: string;
+  status: 'complete' | 'partial' | 'failed';
+  executionTimeMs?: number;
+  cached?: boolean;
+}
+
+export interface ProductIdentificationData {
+  name: string;
+  category: string;
+  description: string;
+  brand: string | null;
+  model: string | null;
+  material: string | null;
+  specifications: string[];
+  possibleVariants: string[];
+  confidence: number;
+  uncertainties: string[];
+}
+
+export interface ResearchReportData {
+  status: ResearchStatus;
+  sources: NormalizedResearchResult[];
+  sourceCount: number;
+  provider?: string;
+  executedQueries?: string[];
+  message?: string;
+}
+
+export interface PricingReportData {
+  currency: string | null;
+  minPrice: number | null;
+  maxPrice: number | null;
+  estimatedPrice: number | null;
+  confidence: 'low' | 'medium' | 'high';
+  priceObservations: PriceObservation[];
+  methodology: string;
+  limitations: string[];
+  sampleSize?: number;
+}
+
+export interface PipelineSummaryStatus {
+  understanding: string;
+  research: string;
+  pricing: string;
+  compare?: string;
+}
+
+export interface PriceraResearchResponse {
+  search: SearchMetadata;
+  product: ProductIdentificationData;
+  research: ResearchReportData;
+  pricing: PricingReportData;
+  pipeline: PipelineSummaryStatus;
+
+  // Compatibility aliases
+  success?: boolean;
+  query?: string;
+  normalizedQuery?: string;
+  understanding?: QueryUnderstandingResult;
+  executionTimeMs?: number;
   cached?: boolean;
   error?: string;
 }

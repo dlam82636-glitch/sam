@@ -127,12 +127,18 @@ function parseSnippetToResearchResult(
   const cleanTitle = title.replace(/<[^>]*>?/gm, '').trim();
   const cleanSnippet = snippet ? snippet.replace(/<[^>]*>?/gm, '').trim() : '';
 
-  // Extract domain for source
+  // Extract domain for source and strictly enforce safe web protocols (http / https)
   let sourceDomain = 'Web Source';
   try {
     const parsedUrl = new URL(url);
+    if (parsedUrl.protocol !== 'http:' && parsedUrl.protocol !== 'https:') {
+      return null; // Reject javascript:, data:, file:, etc.
+    }
     sourceDomain = parsedUrl.hostname.replace(/^www\./, '');
-  } catch {}
+    if (!sourceDomain) return null;
+  } catch {
+    return null; // Reject malformed URLs
+  }
 
   // Attempt real price extraction using currency regexes
   const { price, currency } = extractPriceFromText(`${cleanTitle} ${cleanSnippet}`);

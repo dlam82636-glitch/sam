@@ -1,29 +1,37 @@
 import React from 'react';
-import { Hammer, HardHat, Cpu, Armchair, Pipette, Search, ShieldCheck, ArrowRight } from 'lucide-react';
+import { Hammer, HardHat, Cpu, Armchair, Pipette, Search, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
 import { Card } from '@/src/components/ui/Card';
 
 export interface EmptyStateProps {
   onSelectCategoryPrompt: (query: string) => void;
 }
 
+const PRIMARY_EXAMPLES = [
+  '12mm marine plywood',
+  'Samsung A55 256GB',
+  'Industrial safety helmet',
+  'Office chair',
+  'Stainless steel pipe 2 inch',
+];
+
 const CATEGORIES = [
   {
     icon: Hammer,
     title: 'Building Materials & Timber',
-    description: 'Plywood, structural timber, drywall, cement board, insulation',
-    sampleQuery: '12mm marine plywood price in Nigeria',
+    description: 'Marine plywood, structural timber, drywall, cement board, insulation',
+    sampleQuery: '12mm marine plywood',
   },
   {
     icon: Pipette,
     title: 'Industrial Piping & Metals',
     description: 'Stainless steel pipe, structural tubing, brass fittings, copper line',
-    sampleQuery: 'stainless steel pipe 2 inch',
+    sampleQuery: 'Stainless steel pipe 2 inch',
   },
   {
     icon: HardHat,
     title: 'Safety Equipment & PPE',
     description: 'ANSI hard hats, fall protection harnesses, respirators, eye protection',
-    sampleQuery: 'industrial safety helmet',
+    sampleQuery: 'Industrial safety helmet',
   },
   {
     icon: Cpu,
@@ -35,7 +43,7 @@ const CATEGORIES = [
     icon: Armchair,
     title: 'Commercial Outfitting',
     description: 'BIFMA office seating, workstations, storage racking, acoustic panels',
-    sampleQuery: 'office chair',
+    sampleQuery: 'Office chair',
   },
   {
     icon: Search,
@@ -47,17 +55,36 @@ const CATEGORIES = [
 
 export const EmptyState: React.FC<EmptyStateProps> = ({ onSelectCategoryPrompt }) => {
   return (
-    <div className="w-full max-w-4xl mx-auto my-10 animate-in fade-in duration-300">
-      <div className="text-center mb-10">
-        <h3 className="text-xs font-bold uppercase tracking-wider text-teal-700 mb-2 font-mono">
-          Product & Material Scope
-        </h3>
-        <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-          Search products by specification, grade, or brand
+    <div className="w-full max-w-4xl mx-auto my-8 sm:my-10 animate-in fade-in duration-300">
+      {/* Primary Empty State Hero per Part 30 */}
+      <div className="text-center mb-8 sm:mb-10">
+        <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-teal-50 border border-teal-200 text-teal-800 text-xs font-semibold mb-3">
+          <Sparkles className="w-3.5 h-3.5 text-teal-600" />
+          <span>Market Intelligence Engine</span>
+        </div>
+
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">
+          What are you looking for?
+        </h2>
+
+        <p className="text-sm sm:text-base text-slate-600 max-w-xl mx-auto mt-2 leading-relaxed">
+          Search for a product, material, equipment or item to research its specifications and market price.
         </p>
-        <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto mt-2 leading-relaxed">
-          PRICERA evaluates physical items, industrial equipment, and building materials to synthesize structured parameters and transparent market price distributions.
-        </p>
+
+        {/* Clickable Quick-Start Example Chips */}
+        <div className="mt-5 flex flex-wrap justify-center items-center gap-2 max-w-2xl mx-auto">
+          <span className="text-xs font-semibold text-slate-500 mr-1">Quick examples:</span>
+          {PRIMARY_EXAMPLES.map((eg) => (
+            <button
+              key={eg}
+              type="button"
+              onClick={() => onSelectCategoryPrompt(eg)}
+              className="px-3 py-1.5 rounded-lg bg-white border border-slate-200 text-xs font-medium text-slate-700 hover:text-teal-900 hover:border-teal-500 hover:bg-teal-50/50 shadow-2xs transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-teal-500"
+            >
+              {eg}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Grid of Product Categories */}
@@ -97,7 +124,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onSelectCategoryPrompt }
       </div>
 
       {/* Pro-Tips for Search Accuracy */}
-      <div className="mt-10 p-5 rounded-2xl bg-white border border-slate-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-slate-600">
+      <div className="mt-8 sm:mt-10 p-5 rounded-2xl bg-white border border-slate-200/90 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-xs text-slate-600 shadow-2xs">
         <div className="flex items-start gap-3">
           <ShieldCheck className="w-5 h-5 text-teal-600 shrink-0 mt-0.5" />
           <div>
